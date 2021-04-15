@@ -15,9 +15,7 @@ code {
 .container {
     width: 100vw;
     height: 100vh;
-    background-image: url('assets/backgroundHome.jpg');
-    background-repeat: no-repeat;
-    background-position: center;
+    background-color: #ecf0f1;
 }
 
 .container form {
@@ -27,9 +25,18 @@ code {
 }
 
 .homecontainer {
-    width: 100vw;
+    width: 70vw;
+    height: 70vh;
     padding: 0;
-    margin: 0;
+    margin: auto;
+    position: fixed;
+    top: 50vh;
+    left: 50vw;
+    transform: translateY(-50%) translateX(-50%);
+    background-color: white;
+    border-radius: 50px;
+    padding: 50px;
+    box-shadow: 0px 0px 20px -10px #7f8c8d;
 }
 
 .topbar {
@@ -52,4 +59,20 @@ code {
     width: 20%;
     margin-left: 5%;
     display: inline-block;
+}
+
+.privateDirectory {
+    display: inline-block;
+    padding: 50px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-image: url('assets/folder.png');
+    color: white;
+    font-size: 25px;
+}
+
+.widget {
+    width: 30vw;
+    box-shadow: 0px 0px 20px -10px #7f8c8d;   
 }
