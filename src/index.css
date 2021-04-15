@@ -26,13 +26,13 @@ code {
 
 .homecontainer {
     width: 70vw;
-    height: 70vh;
+    min-height: 70vh;
     padding: 0;
     margin: auto;
     position: fixed;
-    top: 50vh;
+    top: 10vh;
     left: 50vw;
-    transform: translateY(-50%) translateX(-50%);
+    transform: translateX(-50%);
     background-color: white;
     border-radius: 50px;
     padding: 50px;
@@ -73,6 +73,28 @@ code {
 }
 
 .widget {
-    width: 30vw;
-    box-shadow: 0px 0px 20px -10px #7f8c8d;   
+    margin: 50px;
+}
+
+.dirlist .dirlistitem {
+    padding: 5px;
+    background-color: rgb(200, 200, 200,0.1);
+    color: black;
+    margin-top: 10px;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.dirlist .dirlistitem:hover {
+    background-color: rgb(24, 144, 255,0.1);
+}
+
+span.breadcrumblink {
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+span.breadcrumblink:hover {
+    cursor: pointer;
+    color: rgb(24, 144, 255,0.8);
 }
