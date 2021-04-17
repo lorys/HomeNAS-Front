@@ -1,5 +1,4 @@
 # HomeNAS
 
-This project goal is to allow you to safely access and upload your private data on a raspberry pi using most popular and latest technologies.
-
-It might seem over-killing to use GraphQL, Node.Js and React for a server supposed to run on a raspberry pi but it's a nice way to learn best optimization practices.
+My family and I needed to store sensitive data in a safe place. I started building this website and I tought it would may be usefull for others.
+This website's goal is to be as intuitive and flexible as possible, so everyone can use it.
