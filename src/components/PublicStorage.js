@@ -9,7 +9,7 @@ const PublicStorage = () => {
     const [path, setPath] = useState('/')
 
     useEffect(() => {
-        fetch('/api/public/' + path)
+        fetch('http://localhost:3001/api/public/' + path)
             .then((response) => response.json())
             .catch((e) => setError(e))
             .then((e) => {

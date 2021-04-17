@@ -95,7 +95,7 @@ const DashboardScreen = () => {
 
     useEffect(() => {
         if (!data && loading && !error) {
-            fetch('api/home')
+            fetch('http://localhost:3001/api/home')
                 .then((response) => response.json())
                 .catch((e) => setError(e))
                 .then((files) => {
