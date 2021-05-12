@@ -1,19 +1,22 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Modal, Input, Alert, Avatar } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 import { Error, Loading } from '.'
 
 const LoginModal = ({ connect, setConnect, setPrivateData }) => {
     const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(false)
-    const [password, setPassword] = useState('')
+    const [error, setError] = useState(null)
+    const passwordRef = useRef(null)
+    const passwordVerifRef = useRef(null)
     const login = () => {
+        const password = passwordRef.current.input.value
         setLoading(true)
-        fetch(`http://localhost:3001/api/users/login/${connect}`, {
+        fetch(`http://localhost:3001/api/users/login/${connect.user}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
+            // mode: 'cors',
             body: JSON.stringify({ user: connect, password: password }),
         })
             .then((response) => response.json())
@@ -28,22 +31,35 @@ const LoginModal = ({ connect, setConnect, setPrivateData }) => {
                 }
             })
     }
+    const savePassword = () => {
+        const password = passwordRef.current.input.value
+        const passwordVerif = passwordVerifRef.current.input.value
+        setLoading(true)
+        if (passwordVerif === password && password.length > 1) {
+            fetch(`http://localhost:3001/api/users/login/${connect.user}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // mode: 'cors',
+                body: JSON.stringify({ user: connect, password: password }),
+            })
+                .then((response) => response.json())
+                .catch((e) => setError(1))
+                .then((e) => {
+                    console.log(e)
+                    setPrivateData(e.data)
+                    setLoading(false)
+                })
+        } else {
+            setError(0)
+        }
+    }
     if (!connect) return <></>
-    return (
-        <Modal
-            title={'Connexion au stockage sécurisé'}
-            visible={connect}
-            onOk={() => login()}
-            onCancel={() => setConnect(false)}
-            confirmLoading={loading}
-            cancelText={'Fermer'}
-            okText={'Connexion'}
-        >
-            <p>Connexion en tant que {connect}</p>
-            <Input.Password
-                placeholder={'Mot de passe'}
-                onChange={(e) => setPassword(e.target.value)}
-            />
+    const Password = () => (
+        <>
+            <p>Connexion en tant que {connect.user}</p>
+            <Input.Password placeholder={'Mot de passe'} />
             {error ? (
                 <Alert
                     message={
@@ -54,6 +70,46 @@ const LoginModal = ({ connect, setConnect, setPrivateData }) => {
                     type="error"
                 />
             ) : null}
+        </>
+    )
+    const CreatePassword = () => (
+        <>
+            <p>Création de mot de passe pour {connect.user}</p>
+            <Input.Password
+                ref={passwordRef}
+                placeholder={'Votre mot de passe'}
+                id="password"
+            />
+            <Input.Password
+                ref={passwordVerifRef}
+                id="passwordVerif"
+                style={{ marginTop: 15 }}
+                placeholder={'Retapez votre mot de passe'}
+            />
+            {error !== null ? (
+                <Alert
+                    message={
+                        [
+                            'Les mots de passes ne sont pas identiques.',
+                            'Erreur côté serveur.',
+                        ][error]
+                    }
+                    type="error"
+                />
+            ) : null}
+        </>
+    )
+    return (
+        <Modal
+            title={'Connexion au stockage sécurisé'}
+            visible={connect}
+            onOk={() => (connect.password ? login() : savePassword())}
+            onCancel={() => setConnect(false)}
+            confirmLoading={loading}
+            cancelText={'Fermer'}
+            okText={'Connexion'}
+        >
+            {connect.password ? <Password /> : <CreatePassword />}
         </Modal>
     )
 }
@@ -88,9 +144,10 @@ const PrivateStorage = () => {
                     <div
                         className={'userAvatar'}
                         onClick={() => setConnect(item)}
+                        key={index + '_listuser'}
                     >
                         <Avatar size={64} icon={<UserOutlined />} />
-                        <h3>{item}</h3>
+                        <h3>{item.user}</h3>
                     </div>
                 ))}
             </div>
