@@ -1,7 +1,11 @@
 import { Space } from 'antd'
-import { FolderOpenTwoTone, FolderAddTwoTone } from '@ant-design/icons'
+import {
+    FolderOpenTwoTone,
+    FolderAddTwoTone,
+    FileAddTwoTone,
+} from '@ant-design/icons'
 
-const Explorer = ({ list, callback, path, setPath }) => {
+const Explorer = ({ list, callback, path, setPath, uploadFile }) => {
     return (
         <div className={'dirlist'}>
             {path !== '' && path !== '/' ? (
@@ -25,8 +29,12 @@ const Explorer = ({ list, callback, path, setPath }) => {
                     </Space>
                 </div>
             ) : null}
-            {list.map((item) => (
-                <div className={'dirlistitem'} onClick={() => callback(item)}>
+            {list.map((item, index) => (
+                <div
+                    className={'dirlistitem'}
+                    key={`${index}-realList`}
+                    onClick={() => callback(item)}
+                >
                     <Space align={'center'}>
                         <FolderOpenTwoTone style={{ fontSize: 30 }} />
                         <span style={{ fontSize: 15, marginLeft: 20 }}>
@@ -40,6 +48,14 @@ const Explorer = ({ list, callback, path, setPath }) => {
                     <FolderAddTwoTone style={{ fontSize: 30 }} />
                     <span style={{ fontSize: 15, marginLeft: 20 }}>
                         Créer un nouveau dossier
+                    </span>
+                </Space>
+            </div>
+            <div className={'dirlistitem'} onClick={() => uploadFile()}>
+                <Space align={'center'}>
+                    <FileAddTwoTone style={{ fontSize: 30 }} />
+                    <span style={{ fontSize: 15, marginLeft: 20 }}>
+                        Ajouter un fichier
                     </span>
                 </Space>
             </div>
