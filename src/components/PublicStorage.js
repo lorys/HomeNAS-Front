@@ -1,12 +1,22 @@
 import { useState, useEffect } from 'react'
 import { Breadcrumb } from 'antd'
 import { Loading, Error, Explorer } from './'
+import { SketchSquareFilled } from '@ant-design/icons'
 
 const PublicStorage = () => {
     const [data, setData] = useState(null)
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(true)
     const [path, setPath] = useState('/')
+    const [uploadFileInput, setUploadFile] = useState(null)
+
+    const uploadFile = () => {
+        document.getElementById('uploadInput').click()
+    }
+
+    useEffect(() => {
+        // fetch('http://localhost:3001/api/')
+    }, [uploadFileInput])
 
     useEffect(() => {
         fetch('http://localhost:3001/api/public/' + path)
@@ -43,8 +53,9 @@ const PublicStorage = () => {
                             ? acc
                             : [
                                   ...acc,
-                                  <Breadcrumb.Item>
+                                  <Breadcrumb.Item key={index + '-bread'}>
                                       <span
+                                          key={index + '-bread-span'}
                                           className={'breadcrumblink'}
                                           onClick={() =>
                                               setPath(
@@ -61,8 +72,9 @@ const PublicStorage = () => {
                                   </Breadcrumb.Item>,
                               ],
                     [
-                        <Breadcrumb.Item>
+                        <Breadcrumb.Item key={'root-bread'}>
                             <span
+                                key={'root-bread-span'}
                                 className={'breadcrumblink'}
                                 onClick={() => setPath('/')}
                             >
@@ -77,12 +89,19 @@ const PublicStorage = () => {
 
     return (
         <>
+            <input
+                type="file"
+                style={{ display: 'none' }}
+                onChange={(e) => setUploadFile(e)}
+                id="uploadInput"
+            />
             <BreadcrumbItems path={path} setPath={setPath} />
             <Explorer
-                list={data.filter((a) => a.type === 'dir')}
+                list={data}
                 callback={(dir) => setPath(path + '/' + dir.name)}
                 path={path}
                 setPath={setPath}
+                uploadFile={uploadFile}
             />
         </>
     )
