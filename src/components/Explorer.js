@@ -5,13 +5,23 @@ import {
     FileAddTwoTone,
 } from '@ant-design/icons'
 
+const Item = ({ callback, value, Icon }) => {
+    return (
+        <div className={'dirlistitem'} onClick={() => callback()}>
+            <Space align={'center'}>
+                {Icon}
+                <span style={{ fontSize: 15, marginLeft: 20 }}>{value}</span>
+            </Space>
+        </div>
+    )
+}
+
 const Explorer = ({ list, callback, path, setPath, uploadFile }) => {
     return (
         <div className={'dirlist'}>
             {path !== '' && path !== '/' ? (
-                <div
-                    className={'dirlistitem'}
-                    onClick={() => {
+                <Item
+                    callback={() => {
                         setPath(
                             path
                                 .split('/')
@@ -20,45 +30,27 @@ const Explorer = ({ list, callback, path, setPath, uploadFile }) => {
                                 .join('/')
                         )
                     }}
-                >
-                    <Space align={'center'}>
-                        <FolderOpenTwoTone style={{ fontSize: 30 }} />
-                        <span style={{ fontSize: 15, marginLeft: 20 }}>
-                            ...
-                        </span>
-                    </Space>
-                </div>
+                    value={'...'}
+                    Icon={<FolderOpenTwoTone style={{ fontSize: 30 }} />}
+                />
             ) : null}
             {list.map((item, index) => (
-                <div
-                    className={'dirlistitem'}
-                    key={`${index}-realList`}
-                    onClick={() => callback(item)}
-                >
-                    <Space align={'center'}>
-                        <FolderOpenTwoTone style={{ fontSize: 30 }} />
-                        <span style={{ fontSize: 15, marginLeft: 20 }}>
-                            {item.name}
-                        </span>
-                    </Space>
-                </div>
+                <Item
+                    callback={() => callback(item)}
+                    value={item.name}
+                    Icon={<FolderOpenTwoTone style={{ fontSize: 30 }} />}
+                />
             ))}
-            <div className={'dirlistitem'} onClick={() => callback()}>
-                <Space align={'center'}>
-                    <FolderAddTwoTone style={{ fontSize: 30 }} />
-                    <span style={{ fontSize: 15, marginLeft: 20 }}>
-                        Créer un nouveau dossier
-                    </span>
-                </Space>
-            </div>
-            <div className={'dirlistitem'} onClick={() => uploadFile()}>
-                <Space align={'center'}>
-                    <FileAddTwoTone style={{ fontSize: 30 }} />
-                    <span style={{ fontSize: 15, marginLeft: 20 }}>
-                        Ajouter un fichier
-                    </span>
-                </Space>
-            </div>
+            <Item
+                callback={() => callback()}
+                value={'Créer un nouveau dossier'}
+                Icon={<FolderAddTwoTone style={{ fontSize: 30 }} />}
+            />
+            <Item
+                callback={() => uploadFile()}
+                value={'Ajouter un fichier'}
+                Icon={<FileAddTwoTone style={{ fontSize: 30 }} />}
+            />
         </div>
     )
 }
