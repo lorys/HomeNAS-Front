@@ -8,16 +8,27 @@ const PublicStorage = () => {
     const [loading, setLoading] = useState(true)
     const [path, setPath] = useState('/')
     const [uploadFileInput, setUploadFile] = useState(null)
+    const [fileUploaded, setFileUploaded] = useState(false)
 
     const uploadFile = () => {
         document.getElementById('uploadInput').click()
     }
 
     useEffect(() => {
-        // fetch('http://localhost:3001/api/')
+        if (!uploadFileInput) return
+        fetch('http://localhost:3001/api/upload/', {
+            method: 'POST',
+            body: uploadFileInput.files[0],
+        })
+            .then((response) => response.json())
+            .then(() => {
+                setUploadFile(null)
+                setFileUploaded(true)
+            })
     }, [uploadFileInput])
 
     useEffect(() => {
+        setLoading(true)
         fetch('http://localhost:3001/api/public/' + path)
             .then((response) => response.json())
             .catch((e) => setError(e))
@@ -25,7 +36,7 @@ const PublicStorage = () => {
                 setData(e)
                 setLoading(false)
             })
-    }, [path])
+    }, [path, fileUploaded])
 
     if (loading) return <Loading />
     if (error) return <Error error />
