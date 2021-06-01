@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Breadcrumb } from 'antd'
 import { Loading, Error, Explorer } from './'
-import { SketchSquareFilled } from '@ant-design/icons'
 
 const PublicStorage = () => {
     const [data, setData] = useState(null)
